@@ -1,6 +1,6 @@
 Here is the clean, fully corrected `README.md` code. You can copy this directly into your file.
 
-````markdown
+
 # 🔍 Multi-Document Embedding Search Engine
 
 A lightweight, AI-powered search engine capable of semantic search over text documents. This project implements vector embeddings, efficient local caching, and a ranking algorithm to provide relevant search results with explanations.
