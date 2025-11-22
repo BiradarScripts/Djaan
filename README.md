@@ -1,6 +1,3 @@
-Here is the clean, fully corrected `README.md` code. You can copy this directly into your file.
-
-
 # 🔍 Multi-Document Embedding Search Engine
 
 A lightweight, AI-powered search engine capable of semantic search over text documents. This project implements vector embeddings, efficient local caching, and a ranking algorithm to provide relevant search results with explanations.
@@ -160,5 +157,3 @@ The system uses SQLite (`storage/metadata.db`) as a key–value store:
 
 ```
 
-Would you like me to generate the `requirements.txt` file content to match this README?
-```
