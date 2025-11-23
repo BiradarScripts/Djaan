@@ -7,7 +7,6 @@ from .config import DB_PATH
 
 class CacheManager:
     def __init__(self):
-        # FIX: Ensure the directory exists before connecting
         db_folder = os.path.dirname(DB_PATH)
         if db_folder:
             os.makedirs(db_folder, exist_ok=True)
@@ -34,7 +33,6 @@ class CacheManager:
         return cursor.fetchone()
 
     def upsert_document(self, doc_id, filename, doc_hash, embedding, text_content):
-        # Store embedding as bytes
         embedding_bytes = embedding.tobytes()
         updated_at = datetime.now().isoformat()
         

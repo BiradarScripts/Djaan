@@ -27,7 +27,6 @@ if st.button("Search"):
                         st.subheader(f"📄 {res['doc_id']} (Score: {res['score']})")
                         st.markdown(f"**Preview:** _{res['preview']}_")
                         
-                        # Explanation section [cite: 93]
                         with st.expander("Why this result?"):
                             expl = res['explanation']
                             st.write(f"**Relevance:** {expl['relevance_summary']}")

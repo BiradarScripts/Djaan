@@ -11,12 +11,11 @@ class SearchEngine:
         self.embedder = Embedder()
         self.cache = CacheManager()
         self.index = None
-        self.doc_map = {} # Maps FAISS index ID to real doc_id
+        self.doc_map = {} 
         self.load_or_build_index()
 
     def load_or_build_index(self):
         """Loads FAISS index from disk or builds from DB."""
-        # Trigger embedding update first
         self.embedder.process_documents()
         
         all_docs = self.cache.get_all_embeddings()
@@ -24,28 +23,23 @@ class SearchEngine:
             print("No documents found.")
             return
 
-        # Prepare data for FAISS
         embeddings = np.array([d["embedding"] for d in all_docs])
         self.doc_map = {i: d for i, d in enumerate(all_docs)}
         
-        # Normalize for Cosine Similarity (Inner Product on normalized vectors) [cite: 61, 64]
         faiss.normalize_L2(embeddings)
         
-        self.index = faiss.IndexFlatIP(EMBEDDING_DIM) # [cite: 60]
+        self.index = faiss.IndexFlatIP(EMBEDDING_DIM) 
         self.index.add(embeddings)
         
-        # Persistence (Bonus) [cite: 101]
         os.makedirs(os.path.dirname(FAISS_INDEX_PATH), exist_ok=True)
         faiss.write_index(self.index, FAISS_INDEX_PATH)
 
     def search(self, query: str, top_k: int = 5, use_expansion: bool = False):
-        # 1. Embed Query
         search_query = expand_query(query) if use_expansion else query
         query_vec = self.embedder.embed_query(search_query)
         faiss.normalize_L2(query_vec.reshape(1, -1))
 
-        # 2. Search Vector Index
-        distances, indices = self.index.search(query_vec.reshape(1, -1), top_k) # [cite: 79]
+        distances, indices = self.index.search(query_vec.reshape(1, -1), top_k)
 
         results = []
         for i, idx in enumerate(indices[0]):
@@ -54,7 +48,6 @@ class SearchEngine:
             doc_data = self.doc_map[idx]
             score = float(distances[0][i])
             
-            # 3. Ranking Explanation [cite: 93]
             explanation = self._generate_explanation(query, doc_data["text"], score)
             
             results.append({

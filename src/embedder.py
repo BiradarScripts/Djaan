@@ -14,8 +14,7 @@ class Embedder:
         """Reads files, checks cache, generates embeddings if needed."""
         files = [f for f in os.listdir(DATA_DIR) if f.endswith(".txt")]
         
-        # Bonus: For very large datasets, we would batch here. 
-        # Currently processing per-file to strictly handle logic: "If file hash changes -> regenerate" [cite: 54]
+      
         
         processed_count = 0
         for filename in files:
@@ -27,18 +26,15 @@ class Embedder:
             current_hash = generate_hash(cleaned_text)
             doc_id = filename.split('.')[0]
 
-            # Check Cache
             cached_data = self.cache.get_document(filename)
             
             if cached_data:
                 stored_hash, _, _ = cached_data
                 if stored_hash == current_hash:
-                    continue # Skip if unchanged [cite: 54]
+                    continue 
 
-            # Generate Embedding
             embedding = self.model.encode(cleaned_text).astype(np.float32)
             
-            # Update Cache
             self.cache.upsert_document(doc_id, filename, current_hash, embedding, cleaned_text)
             processed_count += 1
             

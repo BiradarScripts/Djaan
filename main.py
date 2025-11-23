@@ -4,7 +4,6 @@ from src.search_engine import SearchEngine
 
 app = FastAPI(title="Embedding Search Engine")
 
-# Initialize engine
 engine = SearchEngine()
 
 class SearchRequest(BaseModel):
@@ -12,14 +11,14 @@ class SearchRequest(BaseModel):
     top_k: int = 5
     use_expansion: bool = False
 
-@app.post("/search") # [cite: 74]
+@app.post("/search")
 async def search_documents(request: SearchRequest):
     """
     Endpoint to search documents using vector similarity.
     """
     try:
         results = engine.search(request.query, request.top_k, request.use_expansion)
-        return {"results": results} # [cite: 83]
+        return {"results": results} 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

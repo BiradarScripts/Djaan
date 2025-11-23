@@ -3,7 +3,6 @@ import hashlib
 import nltk
 from nltk.corpus import wordnet
 
-# Download wordnet for query expansion
 try:
     nltk.data.find('corpora/wordnet')
 except LookupError:
@@ -11,14 +10,14 @@ except LookupError:
 
 def clean_text(text: str) -> str:
     """Lowercase, remove extra spaces, remove HTML tags."""
-    text = text.lower() # [cite: 25]
-    text = re.sub(r'<[^>]+>', '', text) # Remove HTML [cite: 28]
-    text = re.sub(r'\s+', ' ', text).strip() # Remove extra spaces [cite: 27]
+    text = text.lower() 
+    text = re.sub(r'<[^>]+>', '', text) 
+    text = re.sub(r'\s+', ' ', text).strip() 
     return text
 
 def generate_hash(text: str) -> str:
     """Generate SHA256 hash for cache lookup."""
-    return hashlib.sha256(text.encode('utf-8')).hexdigest() # [cite: 50]
+    return hashlib.sha256(text.encode('utf-8')).hexdigest() 
 
 def expand_query(query: str) -> str:
     """Bonus: Query expansion using WordNet synonyms."""
